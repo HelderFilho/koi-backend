@@ -2,10 +2,17 @@ const port = process.env.PORT || 3003
 const express = require('express')
 const server = express()
 const allowCors = require('./cors')
+const cors = require('cors');
 
 server.use(express.urlencoded({extended: true, limit: '50mb', parameterLimit: 50000}))
 //server.use(express.json())
-server.use(allowCors)
+//server.use(allowCors)
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE');
+    app.use(cors());
+    next();
+});
 server.use(express.json({limit : '50mb'}))
 
 
