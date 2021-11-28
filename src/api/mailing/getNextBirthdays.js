@@ -1,0 +1,17 @@
+const database = require('../../config/server')
+const bcrypt = require('bcrypt');
+const moment = require('moment')
+
+exports.get = async (req, res, next) => {
+  
+    let db = await database.conn();
+    let mailings = await db.query(`select 
+    *
+     from tb_mailing where
+     dt_birthday >= '${moment().format('YYYY-MM-DD')}' and
+     deleted = false
+     order by dt_birthday asc
+     `)
+    res.json(mailings)
+
+    };
