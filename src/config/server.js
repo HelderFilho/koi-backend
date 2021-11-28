@@ -8,7 +8,7 @@ server.use(express.urlencoded({extended: true, limit: '50mb', parameterLimit: 50
 //server.use(express.json())
 //server.use(allowCors)
 server.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", "https://koimedia-frontend.herokuapp.com");
     res.header("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE');
     server.use(cors());
     next();
