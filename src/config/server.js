@@ -22,9 +22,8 @@ server.listen(port, function(){
     console.log(`Rodando na porta ${port}` )
 })
 
-exports.conn =  connect()
 
-async function connect(){
+exports.conn = async function connect(){
   if(global.connection && global.connection.state !== 'disconnected')
       return global.connection;
 
