@@ -7,10 +7,10 @@ const cors = require('cors');
 server.use(express.urlencoded({extended: true, limit: '50mb', parameterLimit: 50000}))
 //server.use(express.json())
 //server.use(allowCors)
-app.use((req, res, next) => {
+server.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE');
-    app.use(cors());
+    server.use(cors());
     next();
 });
 server.use(express.json({limit : '50mb'}))
