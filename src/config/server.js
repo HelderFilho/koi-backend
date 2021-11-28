@@ -15,18 +15,19 @@ server.listen(port, function(){
     console.log(`Rodando na porta ${port}` )
 })
 
-exports.conn = async function connect(){
+exports.conn =  connect()
+
+async function connect(){
   if(global.connection && global.connection.state !== 'disconnected')
       return global.connection;
 
   const mysql = require("mysql2/promise");
   const connection = await mysql.createConnection(
     {
-      host : 'us-cdbr-east-04.cleardb.com',
-      user : 'bb271fce1c7c00',
-      password: 'a92bc3aa',
-      database : 'heroku_a63c9b9262b1ca3',
-      port: '3306'
+      host : '127.0.0.1',
+      user : 'u420220956_koi_react',
+      password: 'Koi_react10',
+      database : 'u420220956_koi_react',
     }
     );
   console.log("Conectou no MySQL!");
