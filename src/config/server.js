@@ -24,10 +24,11 @@ async function connect(){
   const mysql = require("mysql2/promise");
   const connection = await mysql.createConnection(
     {
-      host : '127.0.0.1',
-      user : 'u420220956_koi_react',
-      password: 'Koi_react10',
-      database : 'u420220956_koi_react',
+      host : 'us-cdbr-east-04.cleardb.com',
+      user : 'bb271fce1c7c00',
+      password: 'a92bc3aa',
+      database : 'heroku_a63c9b9262b1ca3',
+      port : '3306'
     }
     );
   console.log("Conectou no MySQL!");
