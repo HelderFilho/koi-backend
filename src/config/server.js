@@ -22,11 +22,11 @@ exports.conn = async function connect(){
   const mysql = require("mysql2/promise");
   const connection = await mysql.createConnection(
     {
-      host : 'localhost',
-      user : 'root',
-      password: 'koimedia',
-      database : 'koimedia',
-      port: '3306'
+      host : 'us-cdbr-east-04.cleardb.com',
+      user : 'bb271fce1c7c00',
+      password: 'a92bc3aa',
+      database : 'heroku_a63c9b9262b1ca3',
+      //port: '3306'
     }
     );
   console.log("Conectou no MySQL!");
