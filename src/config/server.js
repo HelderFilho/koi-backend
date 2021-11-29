@@ -28,7 +28,7 @@ exports.conn = async function connect(){
       return global.connection;
 
   const mysql = require("mysql2/promise");
-  const connection = await mysql.createConnection(
+  const connection = mysql.createConnection(
     {
       host : 'us-cdbr-east-04.cleardb.com',
       user : 'bb271fce1c7c00',
