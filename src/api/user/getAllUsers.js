@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 
 exports.get = async (req, res, next) => {
   
-    let db = await database.
+    let db = await database.conn();
     let users = await db.query(`select 
     tu.id_user,
     tu.name, 
