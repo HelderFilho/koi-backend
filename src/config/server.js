@@ -36,10 +36,9 @@ exports.conn = async function connect(){
       database : 'heroku_a63c9b9262b1ca3',
       port : '3306'
     }
-    ).then(res => {
-      console.log('rrres', res)
-      
-    });
+    ).then(connection => connection
+
+    );
   console.log("Conectou no MySQL!");
   global.connection = connection;
   return connection;
