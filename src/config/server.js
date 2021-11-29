@@ -31,10 +31,10 @@ exports.conn = function connect(){
   const mysql = require("mysql2/promise");
   const connection = mysql.createConnection(
     {
-      host : 'us-cdbr-east-04.cleardb.com',
-      user : 'bb271fce1c7c00',
-      password: 'a92bc3aa',
-      database : 'heroku_a63c9b9262b1ca3',
+      host : 'yjo6uubt3u5c16az.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+      user : 'rv77kkihbhbw5f4d',
+      password: 'oj8at2v7inpiyij6',
+      database : 'q96skt4ipkvhq8x7',
       port : '3306'
     }
     ).then(connection => connection
