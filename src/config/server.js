@@ -24,7 +24,7 @@ server.listen(port, function(){
 
 
 exports.conn = async function connect(){
-  if(global.connection && global.connection.state !== 'disconnected')
+  if(global.connection && global.connection.state !== 'disconnected' && global.connection.state !== 'closed')
       return global.connection;
 
   const mysql = require("mysql2/promise");
