@@ -12,7 +12,7 @@ exports.post = async (req, res, next) => {
     phone,
     fk_id_type,
     place,    
-    id_agency
+    id_mailing
   } = req.body;
 
   let banco = await db.conn();
@@ -43,7 +43,7 @@ exports.post = async (req, res, next) => {
   }
   
   if (place) {
-    values += `place = ${place}, `;
+    values += `place = '${place}', `;
   }
   values = values.replace(/,([^,]*)$/, " " + "$1");
 

@@ -17,7 +17,7 @@ exports.post = async (req, res, next) => {
   
   let client =
     await banco.query(`insert into tb_client (fancy_name, company_name, cnpj, contact, phone, email, address, sponsor, fk_id_agency, deleted) values (
-    '${fancy_name}','${company_name}','${cnpj}','${contact}','${phone}','${email}','${address}','${sponsor}', ${fk_id_agency}, false)`);
+    '${fancy_name}','${company_name}','${cnpj}','${contact}','${phone}','${email}','${address}','${sponsor}', ${fk_id_agency || 0}, false)`);
   
   res.json(client)
 

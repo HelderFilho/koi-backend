@@ -17,7 +17,7 @@ exports.post = async (req, res, next) => {
   
   let vehicle =
     await banco.query(`insert into tb_vehicle (fancy_name, company_name, cnpj, contact, phone, email, address, sponsor, fk_id_square, deleted) values (
-    '${fancy_name}','${company_name}','${cnpj}','${contact}','${phone}','${email}','${address}','${sponsor}', ${fk_id_square}, false)`);
+    '${fancy_name}','${company_name}','${cnpj}','${contact}','${phone}','${email}','${address}','${sponsor}', ${fk_id_square || 0}, false)`);
   
   res.json(vehicle)
 
