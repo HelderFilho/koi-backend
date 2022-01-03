@@ -12,6 +12,7 @@ exports.get = async (req, res, next) => {
      date_format(dt_birthday, '%m-%d')  >= '${moment().format('MM-DD')}' and
      deleted = false
      order by dt_birthday asc
+     limit 5
      `)
     res.json(mailings)
 
