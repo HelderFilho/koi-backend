@@ -23,11 +23,12 @@ exports.post = async (req, res, next) => {
   let banco = await db.conn();
   let products = req.body[1]
   let values = req.body[2]
-
+console.log('oooob', observation)
   let proposal =
   await banco.query(`insert into tb_proposals (month_sell, number, dt_emission, fk_id_client, fk_id_agency, campaign, fk_id_square, month_placement, fk_id_vehicle, fk_id_status, notification_text, notification_frequency, observation, fk_id_user) values (
-  ${month_sell},'${number}','${dt_emission}',${fk_id_client},${fk_id_agency},'${campaign}',${fk_id_square},${month_placement},${fk_id_vehicle}, ${fk_id_status}, '${notification_text}', ${notification_frequency}, '${observation}', ${fk_id_user})`);
-
+  ${month_sell ? month_sell : 0},'${number ? number : ''}','${dt_emission ? dt_emission : moment()}',${fk_id_client ? fk_id_client : 0},
+  ${fk_id_agency ? fk_id_agency : 0},'${campaign ? campaign : ''}',${fk_id_square ? fk_id_square : 0},${month_placement ? month_placement : 0},
+  ${fk_id_vehicle ? fk_id_vehicle : 0}, ${fk_id_status ? fk_id_status : 0}, '${notification_text ? notification_text : ''}', ${notification_frequency ? notification_frequency : 0}, '${observation}', ${fk_id_user})`);
 
 let proposal_value = await banco.query(`insert into tb_rel_proposal_value (fk_id_proposal, standard_discount, gross_value_proposal, 
   standard_discount_proposal, net_value_proposal, approved_gross_value, standard_discount_approved, net_value_approved) values (
