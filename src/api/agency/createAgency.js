@@ -10,14 +10,13 @@ exports.post = async (req, res, next) => {
     phone,
     email,
     address,
-    sponsor,
     fk_id_client,
   } = req.body;
   let banco = await db.conn();
 
   let client =
     await banco.query(`insert into tb_agency (fancy_name, company_name, cnpj, contact, phone, email, address, sponsor, deleted) values (
-    '${fancy_name}','${company_name}','${cnpj}','${contact}','${phone}','${email}','${address}','${sponsor}', false)`);
+    '${fancy_name}','${company_name}','${cnpj}','${contact}','${phone}','${email}','${address}', 0, false)`);
 
     if (fk_id_client) {
     fk_id_client.map(async (v) => {

@@ -10,7 +10,6 @@ exports.post = async (req, res, next) => {
     phone,
     email,
     address,
-    sponsor,
     fk_id_client,
     id_agency
   } = req.body;
@@ -37,9 +36,6 @@ exports.post = async (req, res, next) => {
   }
   if (address) {
     values += `address = '${address}', `;
-  }
-  if (sponsor) {
-    values += `sponsor = '${sponsor}', `;
   }
   values = values.replace(/,([^,]*)$/, " " + "$1");
 

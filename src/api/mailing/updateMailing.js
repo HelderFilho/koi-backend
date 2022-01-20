@@ -36,7 +36,7 @@ exports.post = async (req, res, next) => {
     values += `phone = '${phone}', `;
   }
   if (address) {
-    values += `address = ${address}, `;
+    values += `address = '${address}', `;
   }
   if (fk_id_type) {
     values += `fk_id_type = ${fk_id_type}, `;
