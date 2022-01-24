@@ -15,8 +15,6 @@ exports.post = async (req, res, next) => {
     fk_id_vehicle,
     id_user,
   } = req.body;
-  console.log(profile_pic)
-  console.log(fk_id_vehicle)
 
   let banco = await db.conn();
   let values = "";
@@ -42,7 +40,6 @@ exports.post = async (req, res, next) => {
     values += `fk_id_role = '${fk_id_role}', `;
   }
   if (profile_pic) {
-    console.log('entrou no pro')
     values += `profile_pic = '${profile_pic[0].data}', `;
   }
 

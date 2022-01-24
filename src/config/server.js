@@ -27,7 +27,6 @@ exports.conn = function connect(){
   if(global.connection && global.connection.state !== 'disconnected' && global.connection.state !== 'closed')
       return global.connection;
 
-  console.log('teste')
   const mysql = require("mysql2/promise");
   const connection = mysql.createConnection(
     {

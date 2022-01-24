@@ -23,7 +23,6 @@ exports.post = async (req, res, next) => {
   let banco = await db.conn();
   let products = req.body[1]
   let values = req.body[2]
-console.log('oooob', observation)
   let proposal =
   await banco.query(`insert into tb_proposals (month_sell, number, dt_emission, fk_id_client, fk_id_agency, campaign, fk_id_square, month_placement, fk_id_vehicle, fk_id_status, notification_text, notification_frequency, observation, fk_id_user) values (
   ${month_sell ? month_sell : 0},'${number ? number : ''}','${dt_emission ? dt_emission : moment()}',${fk_id_client ? fk_id_client : 0},
