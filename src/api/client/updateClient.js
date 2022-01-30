@@ -38,7 +38,7 @@ exports.post = async (req, res, next) => {
     values += `address = '${address}', `;
   }
 
-  if (fk_id_square) {
+  if (fk_id_agency) {
     values += `fk_id_agency = '${fk_id_agency}', `;
   }
   values = values.replace(/,([^,]*)$/, " " + "$1");
