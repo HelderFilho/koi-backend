@@ -58,14 +58,7 @@ exports.post = async (req, res, next) => {
     values += `fk_id_vehicle = '${fk_id_vehicle}', `;
   }
   
-  if (file_pp) {
-    values += `file_pp = '${file_pp}', `;
-  } 
-  
-  if (file_material) {
-    values += `file_material = '${file_material}', `;
-  } 
-  
+
   if (fk_id_square) {
     values += `fk_id_square = ${fk_id_square}, `;
   } 

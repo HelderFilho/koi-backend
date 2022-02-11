@@ -8,6 +8,7 @@ const Product = require('../controllers/product')
 const Square = require('../controllers/square')
 const Status = require('../controllers/status')
 const Proposal = require('../controllers/proposal')
+const Notification = require('../controllers/notification')
 module.exports = (app) => {
    User(app),
    Auth(app),
@@ -18,5 +19,6 @@ module.exports = (app) => {
    Product(app),
    Square(app),
    Status(app),
-   Proposal(app)
+   Proposal(app),
+   Notification(app)
 }
