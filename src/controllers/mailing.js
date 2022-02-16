@@ -9,5 +9,6 @@ module.exports = (app) => {
    app.get('/api/mailing/getAllMailings', GetAllMailings.get);
    app.post('/api/mailing/deleteMailing', DeleteMailing.post)
    app.post('/api/mailing/getMailingById', GetMailingById.post)
+   app.post('/api/mailing/updateMailing', UpdateMailing.post)
    app.get('/api/mailing/getNextBirthdays', GetNextBirthdays.get)
 }
