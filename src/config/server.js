@@ -39,9 +39,7 @@ exports.conn = function connect(){
       connectionLimit: 10,
       queueLimit: 0
     }
-    ).then(connection => connection
-
-    );
+    )
   console.log("Conectou no MySQL!");
   global.connection = connection;
   return connection;
