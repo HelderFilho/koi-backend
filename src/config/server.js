@@ -30,10 +30,10 @@ exports.conn = function connect(){
   const mysql = require("mysql2/promise");
   const connection = mysql.createPool(
     {
-      host : '31.170.167.1',
-      user : 'u420220956_koi_react',
+      host : '77.243.85.149',
+      user : 'koimedia',
       password: 'Koimedia10',
-      database : 'u420220956_koi_react',
+      database : 'koimedia',
       port : '3306',
       waitForConnections: true,
       connectionLimit: 10,
