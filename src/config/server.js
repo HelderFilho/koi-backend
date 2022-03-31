@@ -30,7 +30,7 @@ exports.conn = function connect(){
   const mysql = require("mysql2/promise");
   const connection = mysql.createPool(
     {
-      host : '77.243.85.149',
+      host : 'localhost',
       user : 'koimedia',
       password: 'Koimedia10',
       database : 'koimedia',
