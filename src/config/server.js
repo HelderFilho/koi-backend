@@ -19,7 +19,7 @@ server.use(express.json({limit : '50mb'}))
 require('../routes/index')(server); // <--- basta adicionar essa linha
 
 server.listen(port, function(){
-    console.log(`Rodando na porta ${port}` )
+    console.log(`Rodando na por ${port}` )
 })
 
 
