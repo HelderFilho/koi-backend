@@ -29,10 +29,10 @@ exports.post = async (req, res, next) => {
   ${fk_id_agency ? fk_id_agency : 0},'${campaign ? campaign : ''}',${fk_id_square ? fk_id_square : 0},${month_placement ? month_placement : 0},
   ${fk_id_vehicle ? fk_id_vehicle : 0}, ${fk_id_status ? fk_id_status : 0}, '${notification_text ? notification_text : ''}', ${notification_frequency ? notification_frequency : 0}, '${observation || ''}', ${fk_id_user})`);
 
-let proposal_value = await banco.query(`insert into tb_rel_proposal_value (fk_id_proposal, standard_discount, gross_value_proposal, 
-  standard_discount_proposal, net_value_proposal, approved_gross_value, standard_discount_approved, net_value_approved) values (
+let proposal_value = await banco.query(`insert into tb_rel_proposal_value (fk_id_proposal, standard_discount, gross_value_proposal,
+   standard_discount_proposal, net_value_proposal, approved_gross_value, standard_discount_approved, net_value_approved) values (
     ${proposal[0].insertId || 0}, ${values.standardDiscount || 0}, ${values.grossValueProposal || 0}, ${values.standardDiscountProposal || 0},
-    ${values.netValueProposal || 0}, ${values.approvedGrossValue || 0}, ${values.standardDiscountApproved || 0}, ${values.netValueApproved || 0}
+    ${values.netValueProposal || 0}, ${values.approvedGrossValue ? values.approvedGrossValue.replace(/[^\d.-]/g, '') : 0}, ${values.standardDiscountApproved ? values.standardDiscountApproved.replace(/[^\d.-]/g, '') : 0}, ${values.netValueApproved ? values.netValueApproved.replace(/[^\d.-]/g, '') : 0}
   )`)
 
   await Promise.all(products.map( async p => {
