@@ -31,7 +31,7 @@ exports.post = async (req, res, next) => {
   }
   
   if (number) {
-    values += `number = '${number}', `;
+    values += `number = '${number || 0}', `;
   }
   
   if (dt_emission) {

@@ -3,12 +3,10 @@ let  crypto = require('crypto');
 
 
 exports.post = async (req, res, next) => {
-    console.log('1')
   try{
      let email = req.body.email;
     let password = req.body.password;
     let banco = await db.conn();
-    console.log('2')
     let query = `
     select 
     tu.id_user,
@@ -35,9 +33,7 @@ exports.post = async (req, res, next) => {
     }else{
         res.json(null);
     }
- console.log('3')
 }catch(e){
-    console.log(e)
     res.json(null)
 }
     };
