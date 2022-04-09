@@ -8,7 +8,7 @@ const stream = require("stream"); // Added
 
 const { OAuth2Client } = require('google-auth-library')
 const SCOPES = ['https://www.googleapis.com/auth/drive'];
-const KEYFILE_PATH = './keyfile.json';
+//const KEYFILE_PATH = './keyfile.json';
 
 /*
 const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
@@ -38,7 +38,7 @@ const connect = () => {
   return drive
 }
 
-
+/*
 const getConnection = async () => {
   const auth = new drive.auth.GoogleAuth({
     keyFile: KEYFILE_PATH,
@@ -54,6 +54,7 @@ const getConnection = async () => {
 
   return client
 }
+*/
 
 exports.UploadFile = async function UploadFile(nameFile, filetype, file, folder) {
   const client = connect()
