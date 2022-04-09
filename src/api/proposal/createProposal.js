@@ -1,6 +1,7 @@
 const moment = require('moment')
 const db = require("../../config/server");
 const proposal = require("../../controllers/proposal");
+const fileUtils = require('../../utils/filesUtils')
 exports.post = async (req, res, next) => {
   let {
     month_sell,
@@ -23,11 +24,12 @@ exports.post = async (req, res, next) => {
   let banco = await db.conn();
   let products = req.body[1]
   let values = req.body[2]
+  let folderID = await fileUtils.CreateFolder();
   let proposal =
-  await banco.query(`insert into tb_proposals (month_sell, number, dt_emission, fk_id_client, fk_id_agency, campaign, fk_id_square, month_placement, fk_id_vehicle, fk_id_status, notification_text, notification_frequency, observation, fk_id_user) values (
+  await banco.query(`insert into tb_proposals (month_sell, number, dt_emission, fk_id_client, fk_id_agency, campaign, fk_id_square, month_placement, fk_id_vehicle, fk_id_status, notification_text, notification_frequency, observation, fk_id_user, folder_id) values (
   ${month_sell ? month_sell : 0},'${number ? number : 0}','${dt_emission ? dt_emission : moment()}',${fk_id_client ? fk_id_client : 0},
   ${fk_id_agency ? fk_id_agency : 0},'${campaign ? campaign : ''}',${fk_id_square ? fk_id_square : 0},${month_placement ? month_placement : 0},
-  ${fk_id_vehicle ? fk_id_vehicle : 0}, ${fk_id_status ? fk_id_status : 0}, '${notification_text ? notification_text : ''}', ${notification_frequency ? notification_frequency : 0}, '${observation || ''}', ${fk_id_user})`);
+  ${fk_id_vehicle ? fk_id_vehicle : 0}, ${fk_id_status ? fk_id_status : 0}, '${notification_text ? notification_text : ''}', ${notification_frequency ? notification_frequency : 0}, '${observation || ''}', ${fk_id_user}, '${folderID}')`);
 
 let proposal_value = await banco.query(`insert into tb_rel_proposal_value (fk_id_proposal, standard_discount, gross_value_proposal,
    standard_discount_proposal, net_value_proposal, approved_gross_value, standard_discount_approved, net_value_approved) values (
@@ -75,32 +77,13 @@ let proposal_value = await banco.query(`insert into tb_rel_proposal_value (fk_id
 
 
     if (file_material){
-      var fs = require("fs");
-      var dir = "./FileMaterial";
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir);
-      }
-  
-      dir = "./FileMaterial/" + proposal[0].insertId;
-  
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir);
-      }
-      var fs = require("fs");
-   
-      Object.entries(file_pp).map(f => {
-        var fileContent =  f[1].data.split('base64,')[1] || f[1].data;
-  
+      Object.entries(file_material).map(f => {
+        var fileContent = f[1].data;
         var filepath = f[1].filename;
-        fs.writeFile(
-          dir + "/" + filepath,
-          new Buffer.from(fileContent, "base64"),
-          err => {
-            if (err) throw err;
-          }
-        );
-        })     
-      
+        if (f[1].data) {
+          fileUtils.UploadFile(f[1].filename, f[1].filetype, fileContent, folderID)
+        }
+      })
       }
   
 

@@ -1,9 +1,12 @@
 const database = require('../../config/server')
 const bcrypt = require('bcrypt');
-
+const files = require('../../utils/filesUtils')
+//const files2 = require('../../utils/filesUtils2')
 
 exports.get = async (req, res, next) => {
     let db = await database.conn();
+    //console.log('files', await files.ListFiles('1YXjecyrUEq-CC5j_X2VhmuSQDVOChZ6J'))
+   // console.log(files2.ListFiles())
     let proposals = await db.query(`select 
         tp.id_proposals,
         tp.month_sell,
@@ -21,6 +24,7 @@ exports.get = async (req, res, next) => {
         tp.observation,
         tp.dt_cad,
         tp.fk_id_user,
+        tp.folder_id,
         (select JSON_ARRAYAGG(JSON_OBJECT('fk_id_product', trpp.fk_id_product, 'price', trpp.price, 'quantity_hired', trpp.quantity_hired, 'quantity_delivered', trpp.quantity_delivered, 'negociation', trpp.negociation, 'dt_start', trpp.dt_start,
         'dt_end', trpp.dt_end, 'objective', trpp.objective)) from tb_rel_proposal_product trpp where trpp.fk_id_proposal = id_proposals) as products,
        
@@ -29,6 +33,14 @@ exports.get = async (req, res, next) => {
         'net_value_approved', trpv.net_value_approved)) from tb_rel_proposal_value trpv where trpv.fk_id_proposal = id_proposals) as proposal_values
     
         from tb_proposals tp where tp.deleted = false`)
+    await Promise.all(
+        proposals[0].map(async p => {
+            p.file_material = await files.ListFiles(p.folder_id)
+        })
+    )
+    console.log(proposals[0])
+
+        
     res.json(proposals)
 
     };

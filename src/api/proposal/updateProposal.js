@@ -1,6 +1,7 @@
 const db = require("../../config/server");
 const bcrypt = require("bcrypt");
 const moment = require('moment')
+const fileUtils = require('../../utils/filesUtils')
 exports.post = async (req, res, next) => {
   let {
     id_proposals,
@@ -24,54 +25,55 @@ exports.post = async (req, res, next) => {
   let banco = await db.conn();
   let products = req.body[1]
   let values_proposal = req.body[2]
+  let files_to_remove = req.body[3]
   let values = "";
-  
- if (month_sell) {
+
+  if (month_sell) {
     values += `month_sell = ${month_sell}, `;
   }
-  
+
   if (number) {
     values += `number = '${number || 0}', `;
   }
-  
+
   if (dt_emission) {
     values += `dt_emission = '${moment(dt_emission).format('YYYY-MM-DD')}', `;
   }
-  
+
   if (campaign) {
     values += `campaign = '${campaign}', `;
   }
-  
+
   if (month_placement) {
     values += `month_placement = ${month_placement}, `;
   }
-  
+
   if (fk_id_client) {
     values += `fk_id_client = ${fk_id_client}, `;
   }
-  
+
   if (fk_id_agency) {
     values += `fk_id_agency = ${fk_id_agency}, `;
   }
-  
+
   if (fk_id_vehicle) {
     values += `fk_id_vehicle = '${fk_id_vehicle}', `;
   }
-  
+
 
   if (fk_id_square) {
     values += `fk_id_square = ${fk_id_square}, `;
-  } 
-  
+  }
+
   if (notification_text) {
     values += `notification_text = '${notification_text}', `;
-  } 
+  }
   if (notification_frequency) {
     values += `notification_frequency = ${notification_frequency}, `;
-  } 
+  }
   if (fk_id_vehicle) {
     values += `fk_id_vehicle = ${fk_id_vehicle}, `;
-  } 
+  }
   if (fk_id_status) {
     values += `fk_id_status = ${fk_id_status}, `;
   }
@@ -89,34 +91,35 @@ exports.post = async (req, res, next) => {
   let proposal = await banco.query(
     `update tb_proposals set ${values} where id_proposals = ${id_proposals}`
   );
- 
-  
+
+  let folderID = await banco.query(`select folder_id from tb_proposals where id_proposals = ${id_proposals}`)
+  console.log('folderID no update', folderID[0][0].folder_id)
   if (products) {
     await banco.query(
       `delete from tb_rel_proposal_product where fk_id_proposal  = ${id_proposals}`
     );
-  await Promise.all(products.map( async p => {
-    await banco.query(`insert into tb_rel_proposal_product (fk_id_proposal, fk_id_product, objective, quantity_hired, quantity_delivered, negociation, dt_start, dt_end, price) values (
+    await Promise.all(products.map(async p => {
+      await banco.query(`insert into tb_rel_proposal_product (fk_id_proposal, fk_id_product, objective, quantity_hired, quantity_delivered, negociation, dt_start, dt_end, price) values (
       ${id_proposals}, ${p.fk_id_product}, '${p.objective || ''}', ${p.quantity_hired || 0},${p.quantity_delivered || 0}, ${p.negociation || 0}, '${moment(p.dt_start).format('YYYY-MM-DD')}', '${moment(p.dt_end).format('YYYY-MM-DD')}', ${p.price || 0}
     )`)
-  }))
+    }))
   }
- 
-  if (values_proposal){
+
+  if (values_proposal) {
     await banco.query(
       `delete from tb_rel_proposal_value where fk_id_proposal  = ${id_proposals}`
     );
 
     await banco.query(`insert into tb_rel_proposal_value (fk_id_proposal, standard_discount, gross_value_proposal, 
       standard_discount_proposal, net_value_proposal, approved_gross_value, standard_discount_approved, net_value_approved) values (
-        ${id_proposals}, ${values_proposal.standardDiscount || 0}, ${values_proposal.grossValueProposal|| 0}, ${values_proposal.standardDiscountProposal|| 0},
-        ${values_proposal.netValueProposal|| 0}, ${values_proposal.approvedGrossValue|| 0}, ${values_proposal.standardDiscountApproved|| 0}, ${values_proposal.netValueApproved || 0}
-      )`)  
+        ${id_proposals}, ${values_proposal.standardDiscount || 0}, ${values_proposal.grossValueProposal || 0}, ${values_proposal.standardDiscountProposal || 0},
+        ${values_proposal.netValueProposal || 0}, ${values_proposal.approvedGrossValue || 0}, ${values_proposal.standardDiscountApproved || 0}, ${values_proposal.netValueApproved || 0}
+      )`)
 
   }
 
 
-  if (file_pp){
+  if (file_pp) {
     var fs = require("fs");
     var dir = "./FilesPP";
     if (!fs.existsSync(dir)) {
@@ -129,51 +132,42 @@ exports.post = async (req, res, next) => {
       fs.mkdirSync(dir);
     }
     var fs = require("fs");
- 
+
     Object.entries(file_pp).map(f => {
-      var fileContent =  f[1].data.split('base64,')[1] || f[1].data;
+      var fileContent = f[1].data.split('base64,')[1] || f[1].data;
 
       var filepath = f[1].filename;
-      fs.writeFile(
-        dir + "/" + filepath,
-        new Buffer.from(fileContent, "base64"),
-        err => {
-          if (err) throw err;
-        }
-      );
-      })     
-    
-    }
+      console.log('F1', f[1])
+      fileUtils.UploadFile(f[1].filename, fileContent, folderID[0][0].folder_id)
+      /* fs.writeFile(
+         dir + "/" + filepath,
+         new Buffer.from(fileContent, "base64"),
+         err => {
+           if (err) throw err;
+         }
+       );*/
+    })
+
+  }
 
 
-    if (file_material){
-      var fs = require("fs");
-      var dir = "./FileMaterial";
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir);
+  if (file_material) {
+
+    Object.entries(file_material).map(f => {
+      var fileContent = f[1].data;
+      var filepath = f[1].filename;
+      if (f[1].data) {
+        fileUtils.UploadFile(f[1].filename, f[1].filetype, fileContent, folderID[0][0].folder_id)
       }
-  
-      dir = "./FileMaterial/" + id_proposals;
-  
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir);
-      }
-      var fs = require("fs");
-   
-      Object.entries(file_pp).map(f => {
-        var fileContent =  f[1].data.split('base64,')[1] || f[1].data;
-  
-        var filepath = f[1].filename;
-        fs.writeFile(
-          dir + "/" + filepath,
-          new Buffer.from(fileContent, "base64"),
-          err => {
-            if (err) throw err;
-          }
-        );
-        })     
-      
-      }
+    })
+
+  }
+
+  if (files_to_remove) {
+    files_to_remove.map(file => {
+      fileUtils.DeleteFile(file.id)
+    })
+  }
 
 
   res.json(proposal);
