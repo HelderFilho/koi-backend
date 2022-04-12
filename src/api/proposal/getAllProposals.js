@@ -3,11 +3,11 @@ const bcrypt = require('bcrypt');
 const files = require('../../utils/filesUtils')
 //const files2 = require('../../utils/filesUtils2')
 
+
+
 exports.get = async (req, res, next) => {
     let db = await database.conn();
-    //console.log('files', await files.ListFiles('1YXjecyrUEq-CC5j_X2VhmuSQDVOChZ6J'))
-   // console.log(files2.ListFiles())
-    let proposals = await db.query(`select 
+     let proposals = await db.query(`select 
         tp.id_proposals,
         tp.month_sell,
         tp.number,
@@ -38,9 +38,6 @@ exports.get = async (req, res, next) => {
             p.file_material = await files.ListFiles(p.folder_id)
         })
     )
-    console.log(proposals[0])
-
-        
-    res.json(proposals)
+   res.json(proposals)
 
     };

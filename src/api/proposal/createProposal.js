@@ -24,7 +24,7 @@ exports.post = async (req, res, next) => {
   let banco = await db.conn();
   let products = req.body[1]
   let values = req.body[2]
-  let folderID = await fileUtils.CreateFolder();
+  let folderID = await fileUtils.CreateFolder(`proposta_${number || 0}`);
   let proposal =
   await banco.query(`insert into tb_proposals (month_sell, number, dt_emission, fk_id_client, fk_id_agency, campaign, fk_id_square, month_placement, fk_id_vehicle, fk_id_status, notification_text, notification_frequency, observation, fk_id_user, folder_id) values (
   ${month_sell ? month_sell : 0},'${number ? number : 0}','${dt_emission ? dt_emission : moment()}',${fk_id_client ? fk_id_client : 0},

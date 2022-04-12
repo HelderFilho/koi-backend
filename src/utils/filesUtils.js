@@ -1,14 +1,12 @@
-//index.js
 const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
 const docs = require('@googleapis/docs')
 const drive = require('@googleapis/drive')
 const stream = require("stream"); // Added
-
 const { OAuth2Client } = require('google-auth-library')
+
 const SCOPES = ['https://www.googleapis.com/auth/drive'];
-//const KEYFILE_PATH = './keyfile.json';
 
 /*
 const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
@@ -38,30 +36,25 @@ const connect = () => {
   return drive
 }
 
-/*
-const getConnection = async () => {
-  const auth = new drive.auth.GoogleAuth({
-    keyFile: KEYFILE_PATH,
-    scopes: SCOPES
-  })
-  const authClient = await auth.getClient();
+const getAccessToken = async () => {
+  const oauth2Client = new google.auth.OAuth2(
+    CLIENT_ID,
+    CLIENT_SECRET,
+    REDIRECT_URI
+  );
+  oauth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
-  const client = await new drive.drive_v3.Drive({
-    version: 'v3',
-    auth: authClient
-  });
-
-
-  return client
+  const token = await oauth2Client.getAccessToken()
+  return token
 }
-*/
+
 
 exports.UploadFile = async function UploadFile(nameFile, filetype, file, folder) {
   const client = connect()
   const uploadImg = file.split(/,(.+)/)[1];
-  const buf = new Buffer.from(uploadImg, "base64"); // Added
-  const bs = new stream.PassThrough(); // Added
-  bs.end(buf); // Added
+  const buf = new Buffer.from(uploadImg, "base64");
+  const bs = new stream.PassThrough();
+  bs.end(buf);
 
   const createResponse = await client.files.create({
     requestBody: {
@@ -79,12 +72,11 @@ exports.UploadFile = async function UploadFile(nameFile, filetype, file, folder)
 
 exports.ListFiles = async function ListFiles(folder) {
   const client = connect()
-
-  try {
+ try {
     const response = await client.files.list({
       includeRemoved: false,
       spaces: 'drive',
-      fields: 'nextPageToken, files(id, name, parents, mimeType, modifiedTime, webContentLink, webViewLink)',
+      fields: 'nextPageToken, files(id, name, parents, mimeType, webContentLink, webViewLink)',
       q: `'${folder}' in parents`
     })
     return response.data.files
@@ -93,12 +85,13 @@ exports.ListFiles = async function ListFiles(folder) {
   }
 }
 
-exports.CreateFolder = async function CreateFolder() {
+exports.CreateFolder = async function CreateFolder(name) {
   const client = connect()
 
   var fileMetadata = {
-    'name': 'Invoices',
-    'mimeType': 'application/vnd.google-apps.folder'
+    'name': name,
+    'mimeType': 'application/vnd.google-apps.folder',
+    'parents' : ['1eIfYwI1B2RNA9o4VeGEuiMOzbd1jmRT-']
   };
   const response = await client.files.create({
     resource: fileMetadata,
@@ -107,7 +100,7 @@ exports.CreateFolder = async function CreateFolder() {
   return response.data.id
 }
 
-exports.DeleteFile = async function DeleteFile(fileId){
+exports.DeleteFile = async function DeleteFile(fileId) {
   const client = connect()
-  await client.files.delete({fileId : fileId})
-} 
+  await client.files.delete({ fileId: fileId })
+}
