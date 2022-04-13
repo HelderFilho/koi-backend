@@ -24,11 +24,9 @@ server.listen(port, function(){
 
 
 exports.conn = function connect(){
-  console.log('entrou')
   if(global.connection && global.connection.state !== 'disconnected' && global.connection.state !== 'closed')
       return global.connection;
 
-  console.log('tentando conectar')
   const mysql = require("mysql2/promise");
   const connection = mysql.createPool(
     {
