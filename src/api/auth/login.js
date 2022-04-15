@@ -3,6 +3,7 @@ let  crypto = require('crypto');
 
 
 exports.post = async (req, res, next) => {
+    console.log('chegou no login')
   try{
      let email = req.body.email;
     let password = req.body.password;
