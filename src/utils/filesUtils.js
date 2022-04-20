@@ -85,13 +85,34 @@ exports.ListFiles = async function ListFiles(folder) {
   }
 }
 
-exports.CreateFolder = async function CreateFolder(name) {
+exports.ListFilesWithSubFolders = async function ListFilesWithSubFolders(folder) {
   const client = connect()
+  let files = []
+ try {
+    const response = await client.files.list({
+      includeRemoved: false,
+      spaces: 'drive',
+      fields: 'nextPageToken, files(id, name, parents, mimeType, webContentLink, webViewLink)',
+      q: `'${folder}' in parents`
+    })
+    await Promise.all(response.data.files.map(async f => {
+      const file = await this.ListFiles(f.id)
+      files.push(...file)
+    })
+    )
+    return files
 
+  } catch (e) {
+    return []
+  }
+}
+
+exports.CreateFolder = async function CreateFolder(name, id ='1eIfYwI1B2RNA9o4VeGEuiMOzbd1jmRT-' ) {
+  const client = connect()
   var fileMetadata = {
     'name': name,
     'mimeType': 'application/vnd.google-apps.folder',
-    'parents' : ['1eIfYwI1B2RNA9o4VeGEuiMOzbd1jmRT-']
+    'parents' : [id]
   };
   const response = await client.files.create({
     resource: fileMetadata,

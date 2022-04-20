@@ -92,7 +92,7 @@ exports.post = async (req, res, next) => {
     `update tb_proposals set ${values} where id_proposals = ${id_proposals}`
   );
 
-  let folderID = await banco.query(`select folder_id from tb_proposals where id_proposals = ${id_proposals}`)
+  let folderID = await banco.query(`select folder_id, folder_pp_id from tb_proposals where id_proposals = ${id_proposals}`)
   console.log('folderID no update', folderID[0][0].folder_id)
   if (products) {
     await banco.query(
@@ -120,34 +120,14 @@ exports.post = async (req, res, next) => {
 
 
   if (file_pp) {
-    var fs = require("fs");
-    var dir = "./FilesPP";
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir);
-    }
-
-    dir = "./FilesPP/" + id_proposals;
-
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir);
-    }
-    var fs = require("fs");
 
     Object.entries(file_pp).map(f => {
-      var fileContent = f[1].data.split('base64,')[1] || f[1].data;
-
-      var filepath = f[1].filename;
-      console.log('F1', f[1])
-      fileUtils.UploadFile(f[1].filename, fileContent, folderID[0][0].folder_id)
-      /* fs.writeFile(
-         dir + "/" + filepath,
-         new Buffer.from(fileContent, "base64"),
-         err => {
-           if (err) throw err;
-         }
-       );*/
+      var fileContent =  f[1].data;
+      //console.log('f1', f[1])
+      if (f[1].data) {
+        fileUtils.UploadFile(f[1].filename, f[1].filetype, fileContent, folderID[0][0].folder_pp_id)
+      }
     })
-
   }
 
 
@@ -155,7 +135,6 @@ exports.post = async (req, res, next) => {
 
     Object.entries(file_material).map(f => {
       var fileContent = f[1].data;
-      var filepath = f[1].filename;
       if (f[1].data) {
         fileUtils.UploadFile(f[1].filename, f[1].filetype, fileContent, folderID[0][0].folder_id)
       }

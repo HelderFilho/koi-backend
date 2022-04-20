@@ -9,6 +9,7 @@ const Square = require('../controllers/square')
 const Status = require('../controllers/status')
 const Proposal = require('../controllers/proposal')
 const Notification = require('../controllers/notification')
+const Files = require('../controllers/files')
 module.exports = (app) => {
    User(app),
    Auth(app),
@@ -20,5 +21,6 @@ module.exports = (app) => {
    Square(app),
    Status(app),
    Proposal(app),
-   Notification(app)
+   Notification(app),
+   Files(app)
 }
