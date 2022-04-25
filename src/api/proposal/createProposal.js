@@ -19,7 +19,8 @@ exports.post = async (req, res, next) => {
     notification_frequency,
     fk_id_status,
     observation,
-    fk_id_user
+    fk_id_user,
+    fk_id_responsable
   } = req.body[0];
   let banco = await db.conn();
   let products = req.body[1]
@@ -29,10 +30,10 @@ exports.post = async (req, res, next) => {
   let folderID = await fileUtils.CreateFolder(`proposta_${number || 0}`);
   let proposal =
 
-    await banco.query(`insert into tb_proposals (month_sell, number, dt_emission, fk_id_client, fk_id_agency, campaign, fk_id_square, month_placement, fk_id_vehicle, fk_id_status, notification_text, notification_frequency, observation, fk_id_user, folder_id) values (
+    await banco.query(`insert into tb_proposals (month_sell, number, dt_emission, fk_id_client, fk_id_agency, campaign, fk_id_square, month_placement, fk_id_vehicle, fk_id_status, notification_text, notification_frequency, observation, fk_id_user, folder_id, fk_id_responsable) values (
   ${month_sell ? month_sell : 0},'${number ? number : 0}','${dt_emission ? dt_emission : moment()}',${fk_id_client ? fk_id_client : 0},
   ${fk_id_agency ? fk_id_agency : 0},'${campaign ? campaign : ''}',${fk_id_square ? fk_id_square : 0},${month_placement ? month_placement : 0},
-  ${fk_id_vehicle ? fk_id_vehicle : 0}, ${fk_id_status ? fk_id_status : 0}, '${notification_text ? notification_text : ''}', ${notification_frequency ? notification_frequency : 0}, '${observation || ''}', ${fk_id_user}, '${folderID}')`);
+  ${fk_id_vehicle ? fk_id_vehicle : 0}, ${fk_id_status ? fk_id_status : 0}, '${notification_text ? notification_text : ''}', ${notification_frequency ? notification_frequency : 0}, '${observation || ''}', ${fk_id_user}, '${folderID}', ${fk_id_responsable || 0})`);
 
   let proposal_value = await banco.query(`insert into tb_rel_proposal_value (fk_id_proposal, standard_discount, gross_value_proposal,
    standard_discount_proposal, net_value_proposal, approved_gross_value, standard_discount_approved, net_value_approved) values (

@@ -20,7 +20,8 @@ exports.post = async (req, res, next) => {
     notification_frequency,
     fk_id_status,
     observation,
-    fk_id_user
+    fk_id_user,
+    fk_id_responsable
   } = req.body[0];
   let banco = await db.conn();
   let products = req.body[1]
@@ -86,6 +87,9 @@ exports.post = async (req, res, next) => {
     values += `fk_id_user = ${fk_id_user}, `;
   }
 
+  if (fk_id_responsable) {
+    values += `fk_id_responsable = ${fk_id_responsable}, `;
+  }
   values = values.replace(/,([^,]*)$/, " " + "$1");
 
   let proposal = await banco.query(
