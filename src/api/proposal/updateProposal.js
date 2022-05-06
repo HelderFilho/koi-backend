@@ -97,14 +97,14 @@ exports.post = async (req, res, next) => {
   );
 
   let folderID = await banco.query(`select folder_id, folder_pp_id from tb_proposals where id_proposals = ${id_proposals}`)
-  console.log('folderID no update', folderID[0][0].folder_id)
   if (products) {
     await banco.query(
       `delete from tb_rel_proposal_product where fk_id_proposal  = ${id_proposals}`
     );
     await Promise.all(products.map(async p => {
-      await banco.query(`insert into tb_rel_proposal_product (fk_id_proposal, fk_id_product, objective, quantity_hired, quantity_delivered, negociation, dt_start, dt_end, price) values (
-      ${id_proposals}, ${p.fk_id_product}, '${p.objective || ''}', ${p.quantity_hired || 0},${p.quantity_delivered || 0}, ${p.negociation || 0}, '${moment(p.dt_start).format('YYYY-MM-DD')}', '${moment(p.dt_end).format('YYYY-MM-DD')}', ${p.price || 0}
+      await banco.query(`insert into tb_rel_proposal_product (fk_id_proposal, fk_id_product, objective, quantity_hired, quantity_delivered, negociation, dt_start, dt_end, price, product_name) values (
+      ${id_proposals}, ${p.fk_id_product}, '${p.objective || ''}', ${p.quantity_hired || 0},${p.quantity_delivered || 0}, ${p.negociation || 0}, '${moment(p.dt_start).format('YYYY-MM-DD')}', 
+      '${moment(p.dt_end).format('YYYY-MM-DD')}', ${p.price || 0}, '${p.name}'
     )`)
     }))
   }
