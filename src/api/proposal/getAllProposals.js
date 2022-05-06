@@ -27,6 +27,7 @@ exports.get = async (req, res, next) => {
         tp.folder_id,
         tp.folder_pp_id,
         tp.fk_id_responsable,
+        (select name from tb_status where id_status = tp.fk_id_status limit 1) as status_name,
         (select JSON_ARRAYAGG(JSON_OBJECT('fk_id_product', trpp.fk_id_product, 'price', trpp.price, 'quantity_hired', trpp.quantity_hired, 'quantity_delivered', trpp.quantity_delivered, 'negociation', trpp.negociation, 'dt_start', trpp.dt_start,
         'dt_end', trpp.dt_end, 'objective', trpp.objective, 'name', trpp.product_name)) from tb_rel_proposal_product trpp where trpp.fk_id_proposal = id_proposals) as products,
        
