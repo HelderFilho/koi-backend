@@ -27,6 +27,8 @@ exports.post = async (req, res, next) => {
   let values = req.body[2]
   let user = req.body[4]
   let folderID = await fileUtils.CreateFolder(`proposta_${number || 0}`);
+  
+ 
   let proposal =
 
     await banco.query(`insert into tb_proposals (month_sell, number, dt_emission, fk_id_client, fk_id_agency, campaign, fk_id_square, month_placement, fk_id_vehicle, fk_id_status, notification_text, notification_frequency, observation, fk_id_user, folder_id, fk_id_responsable) values (
@@ -37,7 +39,7 @@ exports.post = async (req, res, next) => {
   let proposal_value = await banco.query(`insert into tb_rel_proposal_value (fk_id_proposal, standard_discount, gross_value_proposal,
    standard_discount_proposal, net_value_proposal, approved_gross_value, standard_discount_approved, net_value_approved) values (
     ${proposal[0].insertId || 0}, ${values.standardDiscount || 0}, ${values.grossValueProposal || 0}, ${values.standardDiscountProposal || 0},
-    ${values.netValueProposal || 0}, ${values.approvedGrossValue ? values.approvedGrossValue.replace(/[^\d.-]/g, '') : 0}, ${values.standardDiscountApproved ? values.standardDiscountApproved.replace(/[^\d.-]/g, '') : 0}, ${values.netValueApproved ? values.netValueApproved.replace(/[^\d.-]/g, '') : 0}
+    ${values.netValueProposal || 0}, ${values.approvedGrossValue ? parseFloat(values.approvedGrossValue.replace('R$', '').replaceAll('.','').replace(',','.')) : 0}, ${values.standardDiscountApproved ? parseFloat(values.standardDiscountApproved.replace('R$', '').replaceAll('.','').replace(',','.')) : 0}, ${values.netValueApproved ? parseFloat(values.netValueApproved.replace('R$', '').replaceAll('.','').replace(',','.')) : 0}
   )`)
 
   await Promise.all(products.map(async p => {
