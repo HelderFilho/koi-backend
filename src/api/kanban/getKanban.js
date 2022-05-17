@@ -46,7 +46,6 @@ tkc.id_kanban_card = trukc.fk_id_kanban_card and trukc.fk_id_user = ${user} and 
                 c.users = users[0].map(u => u.fk_id_user)
             }))
         }))
-        console.log(kanban)
     res.json([kanban])
 
 };
