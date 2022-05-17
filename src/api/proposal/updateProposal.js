@@ -28,7 +28,6 @@ exports.post = async (req, res, next) => {
   let values_proposal = req.body[2]
   let files_to_remove = req.body[3]
   let values = "";
-
   if (month_sell) {
     values += `month_sell = ${month_sell}, `;
   }
@@ -127,7 +126,6 @@ exports.post = async (req, res, next) => {
 
     Object.entries(file_pp).map(f => {
       var fileContent =  f[1].data;
-      //console.log('f1', f[1])
       if (f[1].data) {
         fileUtils.UploadFile(f[1].filename, f[1].filetype, fileContent, folderID[0][0].folder_pp_id)
       }

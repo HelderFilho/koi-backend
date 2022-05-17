@@ -10,6 +10,7 @@ const Status = require('../controllers/status')
 const Proposal = require('../controllers/proposal')
 const Notification = require('../controllers/notification')
 const Files = require('../controllers/files')
+const Kanban = require('../controllers/kanban')
 module.exports = (app) => {
    User(app),
    Auth(app),
@@ -22,5 +23,6 @@ module.exports = (app) => {
    Status(app),
    Proposal(app),
    Notification(app),
-   Files(app)
+   Files(app),
+   Kanban(app)
 }

@@ -26,6 +26,5 @@ exports.post = async (req, res, next) => {
     let subfolders_opec = await files.ListFilesWithSubFolders(folders[0][0]['folder_opec_id'])
     files_to_send.push(...subfolders_opec)
   }
-  console.log('444', files_to_send)
   res.json(files_to_send)
 };
