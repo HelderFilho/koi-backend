@@ -23,6 +23,7 @@ exports.post = async (req, res, next) => {
     fk_id_user,
     fk_id_responsable
   } = req.body[0];
+
   let banco = await db.conn();
   let products = req.body[1]
   let values_proposal = req.body[2]
@@ -103,7 +104,7 @@ exports.post = async (req, res, next) => {
     await Promise.all(products.map(async p => {
       await banco.query(`insert into tb_rel_proposal_product (fk_id_proposal, fk_id_product, objective, quantity_hired, quantity_delivered, negociation, dt_start, dt_end, price, product_name) values (
       ${id_proposals}, ${p.fk_id_product}, '${p.objective || ''}', ${p.quantity_hired || 0},${p.quantity_delivered || 0}, ${p.negociation || 0}, '${moment(p.dt_start).format('YYYY-MM-DD')}', 
-      '${moment(p.dt_end).format('YYYY-MM-DD')}', ${p.price || 0}, '${p.name}'
+      '${moment(p.dt_end).format('YYYY-MM-DD')}', ${p.price.toFixed(2) || 0}, '${p.name}'
     )`)
     }))
   }
@@ -115,8 +116,8 @@ exports.post = async (req, res, next) => {
 
     await banco.query(`insert into tb_rel_proposal_value (fk_id_proposal, standard_discount, gross_value_proposal, 
       standard_discount_proposal, net_value_proposal, approved_gross_value, standard_discount_approved, net_value_approved) values (
-        ${id_proposals}, ${values_proposal.standardDiscount || 0}, ${values_proposal.grossValueProposal || 0}, ${values_proposal.standardDiscountProposal || 0},
-        ${values_proposal.netValueProposal || 0}, ${values_proposal.approvedGrossValue || 0}, ${values_proposal.standardDiscountApproved || 0}, ${values_proposal.netValueApproved || 0}
+        ${id_proposals}, ${values_proposal.standardDiscount || 0}, ${values_proposal.grossValueProposal || 0}, ${parseFloat(values_proposal.standardDiscountProposal.replace(',','.')) || 0},
+        ${parseFloat(values_proposal.netValueProposal.replace(',','.')) || 0}, ${values_proposal.approvedGrossValue || 0}, ${parseFloat(values_proposal.standardDiscountApproved.replace(',','.')) || 0}, ${parseFloat(values_proposal.netValueApproved.replace(',','.')) || 0}
       )`)
 
   }
