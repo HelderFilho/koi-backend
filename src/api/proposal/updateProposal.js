@@ -102,9 +102,13 @@ exports.post = async (req, res, next) => {
       `delete from tb_rel_proposal_product where fk_id_proposal  = ${id_proposals}`
     );
     await Promise.all(products.map(async p => {
+      let price = p.price
+      try{
+        price = p.price.toFixed(2)
+      }catch(e){}
       await banco.query(`insert into tb_rel_proposal_product (fk_id_proposal, fk_id_product, objective, quantity_hired, quantity_delivered, negociation, dt_start, dt_end, price, product_name) values (
       ${id_proposals}, ${p.fk_id_product}, '${p.objective || ''}', ${p.quantity_hired || 0},${p.quantity_delivered || 0}, ${p.negociation || 0}, '${moment(p.dt_start).format('YYYY-MM-DD')}', 
-      '${moment(p.dt_end).format('YYYY-MM-DD')}', ${p.price.toFixed(2) || 0}, '${p.name}'
+      '${moment(p.dt_end).format('YYYY-MM-DD')}', ${p.price || 0}, '${p.name}'
     )`)
     }))
   }
@@ -113,11 +117,45 @@ exports.post = async (req, res, next) => {
     await banco.query(
       `delete from tb_rel_proposal_value where fk_id_proposal  = ${id_proposals}`
     );
+    
+    let standardDiscountProposal = values_proposal.standardDiscountProposal
+    try{
+      standardDiscountProposal = parseFloat(values_proposal.standardDiscountProposal.replace(',','.'))
+    }catch(e){}
+   
+    let grossValueProposal = values_proposal.grossValueProposal
+    try{
+      grossValueProposal = parseFloat(values_proposal.grossValueProposal.replace(',','.'))
+    }catch(e){}
+   
+
+    let netValueProposal = values_proposal.netValueProposal
+    try{
+      netValueProposal = parseFloat(values_proposal.netValueProposal.replace(',','.'))
+    }catch(e){}
+
+    let approvedGrossValue = values_proposal.approvedGrossValue
+    try{
+      approvedGrossValue = parseFloat(values_proposal.approvedGrossValue.replace(',','.'))
+    }catch(e){}
+
+    let standardDiscountApproved = values_proposal.standardDiscountApproved
+    try{
+      standardDiscountApproved = parseFloat(values_proposal.standardDiscountApproved.replace(',','.'))
+    }catch(e){}
+
+    
+    let netValueApproved = values_proposal.netValueApproved
+    try{
+      netValueApproved = parseFloat(values_proposal.netValueApproved.replace(',','.'))
+    }catch(e){}
+
+    
 
     await banco.query(`insert into tb_rel_proposal_value (fk_id_proposal, standard_discount, gross_value_proposal, 
       standard_discount_proposal, net_value_proposal, approved_gross_value, standard_discount_approved, net_value_approved) values (
-        ${id_proposals}, ${values_proposal.standardDiscount || 0}, ${values_proposal.grossValueProposal || 0}, ${parseFloat(values_proposal.standardDiscountProposal.replace(',','.')) || 0},
-        ${parseFloat(values_proposal.netValueProposal.replace(',','.')) || 0}, ${values_proposal.approvedGrossValue || 0}, ${parseFloat(values_proposal.standardDiscountApproved.replace(',','.')) || 0}, ${parseFloat(values_proposal.netValueApproved.replace(',','.')) || 0}
+        ${id_proposals}, ${values_proposal.standardDiscount || 0}, ${grossValueProposal || 0}, ${standardDiscountProposal || 0},
+        ${netValueProposal || 0}, ${approvedGrossValue || 0}, ${standardDiscountApproved || 0}, ${netValueApproved || 0}
       )`)
 
   }
