@@ -25,6 +25,9 @@ server.listen(port, function () {
   console.log(`Rodando na porta ${port}`)
 })
 
+console.log(process.env.DB_DATABASE)
+console.log(process.env.DB_HOST)
+console.log(process.env.DB_PASSWORD)
 
 exports.conn = function connect() {
   if (global.connection && global.connection.state !== 'disconnected' && global.connection.state !== 'closed')
