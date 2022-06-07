@@ -25,9 +25,6 @@ server.listen(port, function () {
   console.log(`Rodando na porta ${port}`)
 })
 
-console.log(process.env.DB_DATABASE)
-console.log(process.env.DB_HOST)
-console.log(process.env.DB_PASSWORD)
 
 exports.conn = function connect() {
   if (global.connection && global.connection.state !== 'disconnected' && global.connection.state !== 'closed')
@@ -36,13 +33,13 @@ exports.conn = function connect() {
   const mysql = require("mysql2/promise");
   const connection = mysql.createPool(
     {
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE,
-      port: process.env.DB_PORT,
+      host: '77.243.85.149',
+      user: 'koimedia',
+      password: 'Koimedia10',
+      database: 'koimedia',
+      port: '3306',
       waitForConnections: true,
-      connectionLimit: 10,
+     connectionLimit: 10,
       queueLimit: 0
     }
   )
