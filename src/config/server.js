@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const port = process.env.PORT || 3003
 const express = require('express')
 const server = express()
@@ -31,11 +33,11 @@ exports.conn = function connect() {
   const mysql = require("mysql2/promise");
   const connection = mysql.createPool(
     {
-      host: '77.243.85.149',
-      user: 'koimedia',
-      password: 'Koimedia10',
-      database: 'koimedia',
-      port: '3306',
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
+      port: process.env.DB_PORT,
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0
