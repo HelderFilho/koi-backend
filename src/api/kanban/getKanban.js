@@ -29,8 +29,8 @@ tkc.id_kanban_card = trukc.fk_id_kanban_card and trukc.fk_id_user = ${user} and 
     (select JSON_ARRAYAGG(JSON_OBJECT(
         'subject', tkc.subject, 
         'description', tkc.description, 
-        'id_kanban_card', tkc.id_kanban_card
-        
+        'id_kanban_card', tkc.id_kanban_card,
+        'user_cad', tkc.user_cad
         
         ))
     from tb_kanban_card tkc where tkc.user_cad = ${user} and tkc.fk_id_kanban_column = tkc2.id_kanban_column and tkc.deleted = false) as cards

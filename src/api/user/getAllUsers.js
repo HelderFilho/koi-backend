@@ -13,6 +13,7 @@ exports.get = async (req, res, next) => {
     tu.place, 
     tu.dt_birthday, 
     tu.fk_id_role, 
+    tu.active,
     tu.profile_pic, 
     (select JSON_ARRAYAGG(truv.fk_id_vehicle) from tb_rel_user_vehicle truv where truv.fk_id_user = tu.id_user) as fk_id_vehicle,
     (select JSON_ARRAYAGG(tv.fancy_name) from tb_vehicle tv, tb_rel_user_vehicle truv where truv.fk_id_user = tu.id_user and truv.fk_id_vehicle = tv.id_vehicle) as veiculos
