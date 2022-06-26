@@ -35,6 +35,6 @@
             res.json(null);
         }
     }catch(e){
-        res.json(null)
+        res.json(e)
     }
         };

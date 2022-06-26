@@ -136,18 +136,17 @@ exports.post = async (req, res, next) => {
 
     let approvedGrossValue = values_proposal.approvedGrossValue
     try{
-      approvedGrossValue = parseFloat(values_proposal.approvedGrossValue.replace(',','.'))
+      approvedGrossValue = parseFloat(values_proposal.approvedGrossValue.replace('R$', '').replace('.', '').replace(',','.'))
     }catch(e){}
-
     let standardDiscountApproved = values_proposal.standardDiscountApproved
     try{
-      standardDiscountApproved = parseFloat(values_proposal.standardDiscountApproved.replace(',','.'))
+      standardDiscountApproved = parseFloat(values_proposal.standardDiscountApproved.replace('R$', '').replace('.', '').replace(',','.'))
     }catch(e){}
 
     
     let netValueApproved = values_proposal.netValueApproved
     try{
-      netValueApproved = parseFloat(values_proposal.netValueApproved.replace(',','.'))
+      netValueApproved = parseFloat(values_proposal.netValueApproved.replace('R$', '').replace('.', '').replace(',','.'))
     }catch(e){}
 
     

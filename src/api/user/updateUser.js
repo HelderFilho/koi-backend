@@ -15,7 +15,6 @@ exports.post = async (req, res, next) => {
     fk_id_vehicle,
     id_user,
   } = req.body;
-
   let banco = await db.conn();
   let values = "";
   if (name) {
@@ -33,7 +32,7 @@ exports.post = async (req, res, next) => {
   if (dt_birthday) {
     values += `dt_birthday = '${moment(dt_birthday).format('YYYY-MM-DD')}', `;
   }
-  if (active) {
+  if (active!=undefined) {
     values += `active = ${active}, `;
   }
   if (fk_id_role) {
