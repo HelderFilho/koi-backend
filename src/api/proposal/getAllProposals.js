@@ -27,7 +27,7 @@ exports.get = async (req, res, next) => {
         tp.folder_id,
         tp.folder_pp_id,
         tp.fk_id_responsable,
-    
+        (select name from tb_status where id_status = tp.fk_id_status limit 1) as status_name,
         (select JSON_ARRAYAGG(JSON_OBJECT('standard_discount', trpv.standard_discount, 'gross_value_proposal', trpv.gross_value_proposal, 'standard_discount_proposal', trpv.standard_discount_proposal,
         'net_value_proposal', trpv.net_value_proposal, 'approved_gross_value', trpv.approved_gross_value, 'standard_discount_approved', trpv.standard_discount_approved,
         'net_value_approved', trpv.net_value_approved)) from tb_rel_proposal_value trpv where trpv.fk_id_proposal = id_proposals) as proposal_values
