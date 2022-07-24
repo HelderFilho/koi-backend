@@ -7,7 +7,7 @@ exports.post = async (req, res, next) => {
   let banco = await db.conn();
  
   let card = await banco.query(
-    `update tb_kanban_card set deleted = true where id_kanban_card = ${fk_id_kanban_card}`
+    `update tb_cards set deleted = true where id_cards = ${fk_id_kanban_card}`
   );
 
  
